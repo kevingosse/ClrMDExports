@@ -1,10 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project>
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
   <PropertyGroup>
     <TargetFrameworks>net471</TargetFrameworks>
     <RootNamespace>ClrMDExports</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+      copy "$(TargetPath)" "$(ProjectDir)\..\..\nuget\lib\netstandard2.0"
+      copy "$(TargetPath)" "$(ProjectDir)\..\..\nuget\lib\net471"
+    </PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -17,26 +25,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Init.cs" />
-    <Compile Include="Init.cs">
-      <Pack>true</Pack>
-      <PackageCopyToOutput>false</PackageCopyToOutput>
-      <PackageBuildAction>Compile</PackageBuildAction>
-    </Compile>
+    <None Include="Init.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <PackageId>ClrMDExports</PackageId>
-    <PackageVersion>1.0.1</PackageVersion>
-    <Title>ClrMD Exports</Title>
-    <Authors>Kevin Gosse</Authors>
-    <Owners>Kevin Gosse</Owners>
-    <PackageProjectUrl>https://github.com/kevingosse/ClrMDExports</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/kevingosse/ClrMDExports</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/kevingosse/ClrMDExports/blob/master/LICENSE</PackageLicenseUrl>
-    <Description>Helper library to create extensions for WinDbg/LLDB using ClrMD.</Description>
-    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
-    <Copyright>Copyright 2019-$([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
-    <PackageTags>ClrMD WinDBG SOS LLDB</PackageTags>
-    <PackageOutputPath>..\nugets</PackageOutputPath>
-  </PropertyGroup>
 </Project>
