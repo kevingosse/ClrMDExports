@@ -16,9 +16,9 @@ namespace ClrMDExports
 
         public static bool IsWinDbg { get; set; }
 
-        public static IDebugClient DebugClient { get; private set; }
-        public static DataTarget DataTarget { get; private set; }
-        public static ClrRuntime Runtime { get; private set; }
+        internal static IDebugClient DebugClient { get; private set; }
+        internal static DataTarget DataTarget { get; private set; }
+        internal static ClrRuntime Runtime { get; private set; }
 
         private static readonly string[] vtable =
         {
