@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Diagnostics.Runtime;
 
 namespace ClrMDExports
@@ -11,20 +13,48 @@ namespace ClrMDExports
     {
         private readonly IntPtr _client;
         private readonly string _args;
-        private readonly DebuggingMethod _callback;
+        private readonly string _type;
+        private readonly int _methodMetadataToken;
 
-        public CrossDomainInvoker(IntPtr client, string args, DebuggingMethod callback)
+        public CrossDomainInvoker(IntPtr client, string args, string type, int methodMetadataToken)
         {
             _client = client;
             _args = args;
-            _callback = callback;
+            _type = type;
+            _methodMetadataToken = methodMetadataToken;
         }
 
         public void Invoke()
         {
             DebuggingContext.Initialize(_client, true);
 
-            _callback(DebuggingContext.Runtime, _args);
+            MethodInfo method = null;
+            var type = Type.GetType(_type);
+
+            if (type == null)
+            {
+                Console.WriteLine("Could not load type {0} in child AppDomain", _type);
+                return;
+            }
+
+            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+            method = methods.FirstOrDefault(m => m.MetadataToken == _methodMetadataToken);
+
+            if (method == null)
+            {
+                Console.WriteLine("Could not find static method with metadata token {0} in type {1}", _methodMetadataToken, _type);
+                return;
+            }
+
+            try
+            {
+                method.Invoke(null, new object[] { DebuggingContext.Runtime, _args });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while executing the command: " + ex);
+            }
         }
     }
 }

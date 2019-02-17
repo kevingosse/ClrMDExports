@@ -104,6 +104,12 @@ namespace ClrMDExports
 
         public static void Execute(IntPtr client, string args, DebuggingMethod callback)
         {
+            if (!callback.Method.IsStatic)
+            {
+                Console.WriteLine("The callback given to DebuggingContext.Execute needs to be a static method");
+                return;
+            }
+
             if (IsWinDbg)
             {
                 ExecuteWinDbg(client, args, callback);
@@ -129,7 +135,7 @@ namespace ClrMDExports
                 ChildDomain = AppDomain.CreateDomain("WinDbgExtension", AppDomain.CurrentDomain.Evidence, assemblyPath, ".", false);
             }
 
-            var invoker = new CrossDomainInvoker(client, args, callback);
+            var invoker = new CrossDomainInvoker(client, args, callback.Method.DeclaringType.AssemblyQualifiedName, callback.Method.MetadataToken);
 
             ChildDomain.DoCallBack(invoker.Invoke);
         }

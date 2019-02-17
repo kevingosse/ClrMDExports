@@ -13,18 +13,17 @@ namespace ClrMDExports
         {
             var extensionFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            foreach (var file in Directory.GetFiles(extensionFolder, "*.dll"))
+            try
             {
-                try
-                {
-                    var assemblyName = AssemblyName.GetAssemblyName(file);
+                var file = Path.Combine(extensionFolder, "ClrMDExports.dll");
 
-                    ForceAssemblyLoad(assemblyName);
-                }
-                catch (Exception)
-                {
-                    Debug.WriteLine("Skipping " + file);
-                }
+                var assemblyName = AssemblyName.GetAssemblyName(file);
+
+                ForceAssemblyLoad(assemblyName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not load ClrMDExports: " + ex);
             }
 
             InitializeDebuggingContext();
