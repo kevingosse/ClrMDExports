@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/kevingosse/ClrMDExports/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/kevingosse/ClrMDExports</projectUrl>
     <description>Helper library to create extensions for WinDbg/LLDB using ClrMD.</description>
-    <releaseNotes>Initial version</releaseNotes>
+    <releaseNotes>Add netstandard2.0 target</releaseNotes>
     <copyright>Copyright 2019-2019</copyright>
     <tags>ClrMD WinDBG SOS LLDB</tags>
     <repository url="https://github.com/kevingosse/ClrMDExports" />
