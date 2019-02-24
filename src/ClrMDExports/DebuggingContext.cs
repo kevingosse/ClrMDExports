@@ -14,7 +14,7 @@ namespace ClrMDExports
     {
         private static AppDomain ChildDomain;
 
-        public static bool IsWinDbg { get; set; }
+        public static bool IsWinDbg { get; internal set; }
 
         internal static IDebugClient DebugClient { get; private set; }
         internal static DataTarget DataTarget { get; private set; }
@@ -140,7 +140,7 @@ namespace ClrMDExports
             ChildDomain.DoCallBack(invoker.Invoke);
         }
 
-        public static void Initialize(IntPtr ptrClient, bool isWinDbg)
+        internal static void Initialize(IntPtr ptrClient, bool isWinDbg)
         {
             // On our first call to the API:
             //   1. Store a copy of IDebugClient in DebugClient.
@@ -186,9 +186,10 @@ namespace ClrMDExports
                     var process = Process.GetCurrentProcess();
                     foreach (ProcessModule module in process.Modules)
                     {
-                        if (module.FileName.ToLower().Contains("mscordacwks"))
+                        var fileName = module.FileName.ToLowerInvariant();
+
+                        if (fileName.Contains("mscordacwks") || fileName.Contains("mscordaccore"))
                         {
-                            // TODO:  This does not support side-by-side CLRs.
                             Runtime = DataTarget.ClrVersions.Single().CreateRuntime(module.FileName);
                             break;
                         }

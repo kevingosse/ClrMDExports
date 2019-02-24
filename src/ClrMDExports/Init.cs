@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -38,7 +37,7 @@ namespace ClrMDExports
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void InitializeDebuggingContext()
         {
-            DebuggingContext.IsWinDbg = true;
+            Private.Initialization.IsWinDbg = true;
         }
 
         private static void ForceAssemblyLoad(AssemblyName assemblyName)
