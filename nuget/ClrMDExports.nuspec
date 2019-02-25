@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>ClrMDExports</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>ClrMD Exports</title>
     <authors>Kevin Gosse</authors>
     <owners>Kevin Gosse</owners>
@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/kevingosse/ClrMDExports/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/kevingosse/ClrMDExports</projectUrl>
     <description>Helper library to create extensions for WinDbg/LLDB using ClrMD.</description>
-    <releaseNotes>Fix ClrMD initialization for .net core debugging target</releaseNotes>
+    <releaseNotes>Improve compatibility with LLDB</releaseNotes>
     <copyright>Copyright 2019-2019</copyright>
     <tags>ClrMD WinDBG SOS LLDB</tags>
     <repository url="https://github.com/kevingosse/ClrMDExports" />
