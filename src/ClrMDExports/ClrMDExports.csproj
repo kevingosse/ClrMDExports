@@ -10,15 +10,15 @@
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-      copy "$(TargetPath)" "$(ProjectDir)\..\..\nuget\lib\netstandard2.0"
-      copy "$(TargetPath)" "$(ProjectDir)\..\..\nuget\lib\net471"
-    </PostBuildEvent>
+      xcopy "$(TargetPath)" "$(ProjectDir)\..\..\nuget\lib\netstandard2.0\"
+      xcopy "$(TargetPath)" "$(ProjectDir)\..\..\nuget\lib\net471\"
+</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Diagnostics.Runtime" Version="1.0.3"  />
+    <PackageReference Include="Microsoft.Diagnostics.Runtime" Version="1.0.3" />
     <PackageReference Include="UnmanagedExports.Repack" Version="1.0.3">
       <IncludeAssets>All</IncludeAssets>
       <PrivateAssets>None</PrivateAssets>
