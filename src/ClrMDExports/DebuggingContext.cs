@@ -157,6 +157,8 @@ namespace ClrMDExports
                     var field = typeof(DataTarget).GetField("<PlatformFunctions>k__BackingField", BindingFlags.Static | BindingFlags.NonPublic);
 
                     field.SetValue(null, Activator.CreateInstance(linuxFunctionsType));
+
+                    Console.SetOut(new StripDmlWriter(Console.Out));
                 }
                 else
                 {
