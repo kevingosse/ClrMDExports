@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -7,6 +9,8 @@ namespace ClrMDExports
 {
     internal class NativeInvoker : DispatchProxy
     {
+        private readonly ConcurrentDictionary<(string, string), Type> _delegateTypes = new ConcurrentDictionary<(string, string), Type>();
+
         private IntPtr _address;
         private Type _interfaceType;
         private string[] _vtable;
@@ -37,7 +41,7 @@ namespace ClrMDExports
 
         protected override unsafe object Invoke(MethodInfo targetMethod, object[] args)
         {
-            var delegateType = DelegateBuilder.GenerateDelegateType(targetMethod);
+            var delegateType = _delegateTypes.GetOrAdd((targetMethod.DeclaringType.FullName, targetMethod.Name), _ => DelegateBuilder.GenerateDelegateType(targetMethod));
 
             var vtable = *(long**)_address;
 
