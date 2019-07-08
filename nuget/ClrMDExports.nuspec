@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>ClrMDExports</id>
-    <version>1.0.4</version>
+    <version>1.0.4.1</version>
     <title>ClrMD Exports</title>
     <authors>Kevin Gosse</authors>
     <owners>Kevin Gosse</owners>
@@ -16,8 +16,8 @@
     <repository url="https://github.com/kevingosse/ClrMDExports" />
     <dependencies>
       <group>
-        <dependency id="Microsoft.Diagnostics.Runtime" version="1.0.3" exclude="Build,Analyzers" />
-        <dependency id="UnmanagedExports.Repack" version="1.0.3" include="All" />
+        <dependency id="Microsoft.Diagnostics.Runtime" version="1.1.35504" exclude="Build,Analyzers" />
+        <dependency id="UnmanagedExports.Repack" version="1.0.4" include="All" />
       </group>
     </dependencies>
     <frameworkAssemblies>
