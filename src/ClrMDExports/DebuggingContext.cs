@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -146,7 +145,7 @@ namespace ClrMDExports
             //   1. Store a copy of IDebugClient in DebugClient.
             //   2. Replace Console's output stream to be the debugger window.
             //   3. Create an instance of DataTarget using the IDebugClient.
-            if (DebugClient == null)
+            if (DataTarget == null)
             {
                 if (!isWinDbg)
                 {
@@ -168,49 +167,14 @@ namespace ClrMDExports
                     Console.SetOut(stream);
                 }
 
-                DataTarget = DataTarget.CreateFromDebuggerInterface(DebugClient);
+                DataTarget = DataTarget.CreateFromDbgEng(ptrClient);
             }
 
             // If our ClrRuntime instance is null, it means that this is our first call, or
-            // that the dac wasn't loaded on any previous call.  Find the dac loaded in the
-            // process (the user must use .cordll), then construct our runtime from it.
+            // that the dac wasn't loaded on any previous call.
             if (Runtime == null)
             {
-                if (!isWinDbg)
-                {
-                    Runtime = DataTarget.ClrVersions.Single().CreateRuntime();
-                }
-                else
-                {
-
-                    // Just find a module named mscordacwks and assume it's the one the user
-                    // loaded into windbg.
-                    var process = Process.GetCurrentProcess();
-                    foreach (ProcessModule module in process.Modules)
-                    {
-                        var fileName = module.FileName.ToLowerInvariant();
-
-                        if (fileName.Contains("mscordacwks") || fileName.Contains("mscordaccore"))
-                        {
-                            Runtime = DataTarget.ClrVersions.Single().CreateRuntime(module.FileName);
-                            break;
-                        }
-                    }
-                }
-
-                // Otherwise, the user didn't run .cordll.
-                if (Runtime == null)
-                {
-                    Console.WriteLine("Mscordacwks.dll not loaded into the debugger.");
-                    Console.WriteLine("Run .cordll to load the dac before running this command.");
-                }
-            }
-            else
-            {
-                // If we already had a runtime, flush it for this use.  This is ONLY required
-                // for a live process or iDNA trace.  If you use the IDebug* apis to detect
-                // that we are debugging a crash dump you may skip this call for better perf.
-                Runtime.Flush();
+                Runtime = DataTarget.ClrVersions.Single().CreateRuntime();
             }
         }
     }
